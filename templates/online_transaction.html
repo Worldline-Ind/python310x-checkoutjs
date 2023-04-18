@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Online Transaction Page</title>
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1" />
+	<script src="https://www.paynimo.com/paynimocheckout/client/lib/jquery.min.js" type="text/javascript" >
+    </script>
+    <script type="text/javascript" src="https://www.paynimo.com/Paynimocheckout/server/lib/checkout.js"></script>
+	<script src="{{ url_for('static', filename='online_transaction.js') }}"></script>
+	<script>
+		$(document).ready(function(){
+    		if($("#siDetailsAtMerchantEndCond").val()=="true") {
+    			var amount = "{{ config_data['amountType'] }}"
+    			$("#amountType").val(amount);
+    			var freq = "{{ config_data['frequency'] }}"
+    			$("#frequency").val(freq)
+    			$("#debitStartDate").val("{{ start_date }}")
+    			$("#debitEndDate").val("{{ end_date }}")
+    			$("#amount").change(function(){
+    				$("#maxAmount").val($(this).val() * 2);
+    			});
+    		}
+    	});
+	</script>
+</head>
+
+<body>
+	
+	<h1>Online Transaction</h1>
+	<form method="POST" action="" id="form">
+		{{ form.hidden_tag() }}
+		<table id="worldline_merchant_table", border="1" cellpadding="2" cellspacing="0">
+			<tr>
+				<td>{{ form.merchantCode.label }}</td>
+				<td>{{ form.merchantCode }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.txn_id.label }}</td>
+				<td>{{ form.txn_id }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.amount.label }}</td>
+				<td>{{ form.amount }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.merchantSchemeCode.label }}</td>
+				<td>{{ form.merchantSchemeCode }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.custID.label }}</td>
+				<td>{{ form.custID }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.mobNo.label }}</td>
+				<td>{{ form.mobNo }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.email.label }}</td>
+				<td>{{ form.email }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.customerName.label }}</td>
+				<td>{{ form.customerName }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.currency.label }}</td>
+				<td>{{ form.currency }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.SALT.label }}</td>
+				<td>{{ form.SALT }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.returnUrl.label }}</td>
+				<td>{{ form.returnUrl }}</td>
+			</tr>
+		</table>
+		{{form.submit}}
+		<div id="worldline_embeded_popup"></div>
+	</form>
+</body>
+</html>

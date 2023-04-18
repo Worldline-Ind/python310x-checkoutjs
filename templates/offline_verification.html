@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Offline Verification Page</title>
+	<style>
+		table, td, th {
+		 	border: 1px solid black;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<h1>Offline Verification</h1>
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		{{form.merchantTxnId.label}}
+		{{form.merchantTxnId}}
+		{{form.date.label}}
+		{{form.date}}
+		{{form.submit}}
+		<br><br>
+		{% if response %}
+			<table border="2" align="middle">
+				<tr>
+					<td>Status Code</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['statusCode'] }}</td>
+				</tr>
+				<tr>
+					<td>Merchant Transaction Reference No</td>
+					<td>{{ response['merchantTransactionIdentifier'] }}</td>
+				</tr>
+				<tr>
+					<td>TPSL Transaction ID</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['identifier'] }}</td>
+				</tr>
+				<tr>
+					<td>Amount</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['amount'] }}</td>
+				</tr>
+				<tr>
+					<td>Message</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['errorMessage'] }}</td>
+				</tr>
+				<tr>
+					<td>Status Message</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['statusMessage'] }}</td>
+				</tr>
+				<tr>
+					<td>Date Time</td>
+					<td>{{ response['paymentMethod']['paymentTransaction']['dateTime'] }}</td>
+				</tr>
+			</table>
+		{% endif %}
+	</form>
+</body>
+</html>

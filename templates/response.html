@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Response Page</title>
+</head>
+
+<body>
+
+	<h2> Online Transaction Result </h2>
+	<table border="1" cellpadding="2" cellspacing="2" >
+		<tr>
+			<th>
+				Txn Status
+			</th>
+			<td>
+				{{ data[0] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Txn Message
+			</th>
+			<td>
+				{{ data[1] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Txn Error Message
+			</th>
+			<td>
+				{{ data[2] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Clnt Txn Ref
+			</th>
+			<td>
+				{{ data[3] }}
+			</td>
+		</tr>
+
+
+		<tr>
+			<th>
+				TPSL Bank Cd
+			</th>
+			<td>
+				{{ data[4] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				TPSL Txn Id
+			</th>
+			<td>
+				{{ data[5] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Txn Amt
+			</th>
+			<td>
+				{{ data[6] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Clnt Request Meta
+			</th>
+			<td>
+				{{ data[7] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				TPSL Txn Time
+			</th>
+			<td>
+				{{ data[8] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Balance Amt
+			</th>
+			<td>
+				{{ data[9] }}
+			</td>
+		</tr>
+
+		{% if data[10] != "" %}
+			<tr>
+				<th>
+					Card Id
+				</th>
+				<td>
+					{{ data[10] }}
+				</td>
+			</tr>
+		{% endif %}
+
+		<tr>
+			<th>
+				Alias Name
+			</th>
+			<td>
+				{{ data[11] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Bank Transaction Id
+			</th>
+			<td>
+				{{ data[12] }}
+			</td>
+		</tr>
+
+		{% if data[13] != "" %}
+			<tr>
+				<th>
+					Mandate Reg No
+				</th>
+				<td>
+					{{ data[13] }}
+				</td>
+			</tr>
+		{% endif %}
+
+		<tr>
+			<th>
+				Token
+			</th>
+			<td>
+				{{ data[14] }}
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				Hash
+			</th>
+			<td>
+				{{ data[15] }}
+			</td>
+		</tr>
+
+	</table>
+	<br><br>
+		{{ full_response }}
+	<br><br>
+	
+	
+	{% if response %}
+		<h2>Dual Verification Result</h2>
+		<table border="1" cellpadding="2" cellspacing="2" >
+			<tr>
+				<th>
+					Merchant Code
+				</th>
+				<td>
+					{{ response['merchantCode'] }}
+				</td>	
+			</tr>
+
+			<tr>
+				<th>
+					Merchant Txn Identifier
+				</th>
+				<td>
+					{{ response['merchantTransactionIdentifier'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					Merchant Txn Request Type
+				</th>
+				<td>
+					{{ response['merchantTransactionRequestType'] }}
+				</td>
+			</tr>
+		
+			<tr>
+				<th>
+					 Response
+				</th>
+				<td>
+					{{ response['responseType'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					 Payment DateTime
+				</th>
+				<td>
+					{{ response['paymentMethod']['paymentTransaction']['dateTime'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					 Amount
+				</th>
+				<td>
+					{{ response['paymentMethod']['paymentTransaction']['amount'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					 Payment Transaction Identifier
+				</th>
+				<td>
+					{{ response['paymentMethod']['paymentTransaction']['identifier'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					 Status Code
+				</th>
+				<td>
+					{{ response['paymentMethod']['paymentTransaction']['statusCode'] }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					 Status Message
+				</th>
+				<td>
+					{{ response['paymentMethod']['paymentTransaction']['statusMessage'] }}
+				</td>
+			</tr>
+
+		</table>
+		<br><br>
+		{{ response }}
+	{% endif %}
+	<br><br>
+
+<li><a href="/payment"> "Go HOME!" </a></li>
+
+</body>
+</html>

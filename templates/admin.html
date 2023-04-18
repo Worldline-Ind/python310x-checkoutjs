@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin</title>
+	<style>
+		table, td, th {
+			border: 1px solid black;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		.success{
+			background-color: #cbeacb;
+			color: #398c39;
+			padding: 10px;
+			margin-bottom: 18px;
+			border: 1px solid transparent;
+			border-radius: 3px;
+		}
+	</style>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".success").fadeOut(3000);
+			if ($("#enableSI").val() == "true") {
+				var merchantdetails = "{{ config_data['siDetailsAtMerchantEnd'] }}"
+				console.log(merchantdetails);
+				$("#worldline_admin_table").append('<tr id="merchantdetailsrow">\
+						<th><label for="siDetailsAtMerchantEnd">Enable SI Details at Merchant End</label></th>\
+						<td><select name="siDetailsAtMerchantEnd" id="siDetailsAtMerchantEnd" style="width:85%">\
+						    <option value="true">Enabled</option>\
+						    <option value="false">Disabled</option>\
+						</select></td></tr>');
+				$("#siDetailsAtMerchantEnd").val(merchantdetails);
+
+				var amount = "{{ config_data['amountType'] }}"
+				console.log(amount);
+				$("#worldline_admin_table").append('<tr id="amount"> \
+						<th scope="row"><label for="amountType">Amount Type</label></th>\
+						<td><select id="amountType" name="amountType" style="width:85%" ><option value="M">Variable</option>\
+									<option value="F">Fixed</option> \
+						</select></td></tr>');
+				$('#amountType').val(amount);
+
+				var freq = "{{ config_data['frequency'] }}"
+				console.log(freq);
+				$("#worldline_admin_table").append('<tr id="freq"> \
+						<th scope="row"><label for="frequency">Frequency</label></th>\
+						<td><select id="frequency" name="frequency" style="width:85%"><option value="ADHO">As and when presented</option>\
+									<option value="DAIL">Daily</option> \
+									<option value="WEEK">Weekly</option> \
+									<option value="MNTH">Monthly</option> \
+									<option value="QURT">Quarterly</option> \
+									<option value="MIAN">Semi Annually</option> \
+									<option value="YEAR">Yearly</option> \
+									<option value="BIMN">Bi-monthly</option> \
+						</select></td></tr>');
+				$('#frequency').val(freq);
+			}
+
+			$("#enableSI").change(function(){
+				if ($("#enableSI").val()=="true") {
+					$("#worldline_admin_table").append('<tr id="merchantdetailsrow">\
+						<th><label for="siDetailsAtMerchantEnd">Enable SI Details at Merchant End</label></th>\
+						<td><select name="siDetailsAtMerchantEnd" id="siDetailsAtMerchantEnd" style="width:85%">\
+						    <option value="true">Enabled</option>\
+						    <option value="false">Disabled</option>\
+						</select></td></tr>');
+					$("#worldline_admin_table").append('<tr id="amount"> \
+							<th scope="row"><label for="amountType">Amount Type</label></th>\
+							<td><select id="amountType" name="amountType" style="width:85%" ><option value="M" selected >Variable</option>\
+										<option value="F">Fixed</option> \
+							</select></td></tr>');
+					$("#worldline_admin_table").append('<tr id="freq"> \
+							<th scope="row"><label for="frequency">Frequency</label></th>\
+							<td><select id="frequency" name="frequency" style="width:85%"><option value="ADHO" selected >As and when presented</option>\
+										<option value="DAIL">Daily</option> \
+										<option value="WEEK">Weekly</option> \
+										<option value="MNTH">Monthly</option> \
+										<option value="QURT">Quarterly</option> \
+										<option value="MIAN">Semi Annually</option> \
+										<option value="YEAR">Yearly</option> \
+										<option value="BIMN">Bi-monthly</option> \
+							</select></td></tr>');
+				}
+				else { 
+					$("#merchantdetailsrow").remove();
+					$("#amount").remove();
+					$("#freq").remove();
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	{% for message in get_flashed_messages() %}
+        <div class="success">
+        	{{ message }}
+    	</div>
+    {% endfor %}
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<img src="{{url_for('static', filename='Worldline.png')}}" align="middle" width="30%" />
+		<h2>Worldline Admin</h2>
+		<table id="worldline_admin_table" cellpadding="10" cellspacing="10">
+			<tr>
+				<th>
+					Description
+				</th>
+				<td>
+					Worldline ePayment Services is India's leading digital payment solutions company. Being a company with more than 45 years of global payment experience, we are present in India for over 20 years and are powering over 550,000 businesses with our tailored payment solution.
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.merchantCode.label }}
+				</th>
+				<td>
+					{{ form.merchantCode(size=100) }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.merchantSchemeCode.label }}
+				</th>
+				<td>
+					{{ form.merchantSchemeCode(size=100) }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.SALT.label }}
+				</th>
+				<td>
+					{{ form.SALT(size=100) }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.currency.label }}
+				</th>
+				<td>
+					{{ form.currency(style="width:85%") }}
+					<br><br>
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.typeOfPayment.label }}
+				</th>
+				<td>
+					{{ form.typeOfPayment(style="width:85%") }}
+					<br><br>
+					For TEST mode amount will be charge 1
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.primaryColor.label }}
+				</th>
+				<td>
+					{{ form.primaryColor(size=100) }}
+					<br><br>
+					Color value can be hex, rgb or actual color name
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.secondaryColor.label }}
+				</th>
+				<td>
+					{{ form.secondaryColor(size=100) }}
+					<br><br>
+					Color value can be hex, rgb or actual color name
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.buttonColor1.label }}
+				</th>
+				<td>
+					{{ form.buttonColor1(size=100) }}
+					<br><br>
+					Color value can be hex, rgb or actual color name
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.buttonColor2.label }}
+				</th>
+				<td>
+					{{ form.buttonColor2(size=100) }}
+					<br><br>
+					Color value can be hex, rgb or actual color name
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.logoURL.label }}
+				</th>
+				<td>
+					{{ form.logoURL(size=100) }}
+					<br><br>
+					An absolute URL pointing to a logo image of merchant which will show on checkout popup
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableExpressPay.label }}
+				</th>
+				<td>
+					{{ form.enableExpressPay(style="width:85%") }}
+					<br><br>
+					To enable saved payments set its value to yes
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.separateCardMode.label }}
+				</th>
+				<td>
+					{{ form.separateCardMode(style="width:85%") }}
+					<br><br>
+					If this feature is enabled checkout shows two separate payment mode(Credit Card and Debit Card)
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableNewWindowFlow.label }}
+				</th>
+				<td>
+					{{ form.enableNewWindowFlow(style="width:85%") }}
+					<br><br>
+					If this feature is enabled, then bank page will open in new window
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.merchantMessage.label }}
+				</th>
+				<td>
+					{{ form.merchantMessage(size=100) }}
+					<br><br>
+					Customize message from merchant which will be shown to customer in checkout page
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.disclaimerMessage.label }}
+				</th>
+				<td>
+					{{ form.disclaimerMessage(size=100) }}
+					<br><br>
+					Customize disclaimer message from merchant which will be shown to customer in checkout page
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.paymentMode.label }}
+				</th>
+				<td>
+					{{ form.paymentMode(style="width:85%") }}
+					<br><br>
+					If Bank selection is at Worldline ePayment Services end then select all, if bank selection at Merchant end then pass appropriate mode respective to selected option
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.paymentModeOrder.label }}
+				</th>
+				<td>
+					{{ form.paymentModeOrder(cols=80, row=2) }}
+					<br><br>
+					Please pass order in this format: cards,netBanking,imps,wallets,cashCards,UPI,MVISA,debitPin,NEFTRTGS,emiBanks.
+					Merchant can define their payment mode order
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableInstrumentDeRegistration.label }}
+				</th>
+				<td>
+					{{ form.enableInstrumentDeRegistration(style="width:85%") }}
+					<br><br>
+					If this feature is enabled, you will have an option to delete saved cards
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.transactionType.label }}
+				</th>
+				<td>
+					{{ form.transactionType(style="width:85%") }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.hideSavedInstruments.label }}
+				</th>
+				<td>
+					{{ form.hideSavedInstruments(style="width:85%") }}
+					<br><br>
+					If enabled checkout hides saved payment options even in case of enableExpressPay is enabled
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.saveInstrument.label }}
+				</th>
+				<td>
+					{{ form.saveInstrument(style="width:85%") }}
+					<br><br>
+					Enable this feature to vault instrument
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.displayTransactionMessageOnPopup.label }}
+				</th>
+				<td>
+					{{ form.displayTransactionMessageOnPopup(style="width:85%") }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.embedPaymentGatewayOnPage.label }}
+				</th>
+				<td>
+					{{ form.embedPaymentGatewayOnPage(style="width:85%") }}
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableSI.label }}
+				</th>
+				<td>
+					{{ form.enableSI(style="width:85%") }}
+					<br><br>
+					Enable eMandate using this feature
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.hideSIDetails.label }}
+				</th>
+				<td>
+					{{ form.hideSIDetails(style="width:85%") }}
+					<br><br>
+					Enable this feature to hide SI details from the customer
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.hideSIConfirmation.label }}
+				</th>
+				<td>
+					{{ form.hideSIConfirmation(style="width:85%") }}
+					<br><br>
+					Enable this feature to hide the confirmation screen in eMandate/eNACH/eSign registration
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.expandSIDetails.label }}
+				</th>
+				<td>
+					{{ form.expandSIDetails(style="width:85%") }}
+					<br><br>
+					Enable this feature to show eMandate/eNACH/eSign details in expanded mode by default
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableDebitDay.label }}
+				</th>
+				<td>
+					{{ form.enableDebitDay(style="width:85%") }}
+					<br><br>
+					Enable this feature to acccept debit day value eMandate/eNACH/eSign registration
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.showSIResponseMsg.label }}
+				</th>
+				<td>
+					{{ form.showSIResponseMsg(style="width:85%") }}
+					<br><br>
+					Enable this feature to show eMandate/eNACH/eSign registrations details also in final checkout response
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.showSIConfirmation.label }}
+				</th>
+				<td>
+					{{ form.showSIConfirmation(style="width:85%") }}
+					<br><br>
+					Enable this feature to show confirmation screen for registration
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.enableTxnForNonSICards.label }}
+				</th>
+				<td>
+					{{ form.enableTxnForNonSICards(style="width:85%") }}
+					<br><br>
+					Enable this feature to proceed with a normal transaction with same card details
+				</td>
+			</tr>
+
+			<tr>
+				<th>
+					{{ form.showAllModesWithSI.label }}
+				</th>
+				<td>
+					{{ form.showAllModesWithSI(style="width:85%") }}
+					<br><br>
+					Enable this feature to show all modes with SI
+				</td>
+			</tr>
+
+
+
+		</table>
+		{{ form.submit }}
+	</form>
+</body>
+</html>
